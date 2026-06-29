@@ -56,7 +56,7 @@ def parse_japanese_date(date_text):
         return None
 
 
-threading.Thread(target=run_web_server).start()
+
 
 
 #  ログインしたら価格チェックとリリース日チェックをするよ
@@ -160,6 +160,15 @@ async def remove(ctx, game_id: int):
 
     await ctx.send(f"『{removed_game}』を削除しました！")
 
+
+#   バックアップDBをディスコードに送ってくれる
+
+@bot.command()
+async def backup(ctx):
+    await ctx.send(
+        "games.db のバックアップです",
+        file=discord.File("games.db")
+    )
 
 
 #   金額をチェックする
@@ -341,4 +350,5 @@ async def auto_check_releases():
             mark_released_notified(game_id)
 
 
+threading.Thread(target=run_web_server).start()
 bot.run(TOKEN)
