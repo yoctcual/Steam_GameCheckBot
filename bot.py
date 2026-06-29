@@ -171,6 +171,30 @@ async def backup(ctx):
     )
 
 
+#   DBをバックアップから復元する
+
+@bot.command()
+async def restore(ctx):
+    if not ctx.message.attachments:
+        await ctx.send("復元する games.db を添付して `!restore` を実行してください")
+        return
+
+    attachment = ctx.message.attachments[0]
+
+    if not attachment.filename.endswith(".db"):
+        await ctx.send("`.db` ファイルを添付してください")
+        return
+
+    # 今のDBを念のためバックアップ
+    if os.path.exists("games.db"):
+        os.rename("games.db", "games_before_restore.db")
+
+    await attachment.save("games.db")
+
+    await ctx.send("games.db を復元しました！Botを再起動すると反映されます")
+
+
+
 #   金額をチェックする
 
 @bot.command()
