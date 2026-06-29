@@ -3,6 +3,27 @@ import sqlite3
 
  #　データを取得
 
+
+def init_database():
+    conn = sqlite3.connect("games.db")
+    cursor = conn.cursor()
+
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS games (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
+        url TEXT,
+        release_date TEXT,
+        price TEXT,
+        release_notified INTEGER DEFAULT 0,
+        released_notified INTEGER DEFAULT 0
+    )
+    """)
+
+    conn.commit()
+    conn.close()
+
+
 def add_game(name, url, release_date, price):
     conn = sqlite3.connect("games.db")
     cursor = conn.cursor()

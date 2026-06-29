@@ -12,6 +12,7 @@ from steam_api import (
     price_to_number,
 )
 from database import (
+    init_database,
     add_game,
     get_games,
     remove_game,
@@ -43,9 +44,11 @@ def parse_japanese_date(date_text):
 
 
 #  ログインしたら価格チェックとリリース日チェックをするよ
+#  データベースがなかったら作るよ
 
 @bot.event
 async def on_ready():
+    init_database()
     print(f"ログイン成功: {bot.user}")
 
     if not auto_check_prices.is_running():
