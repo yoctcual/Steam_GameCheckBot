@@ -4,6 +4,9 @@ import sqlite3
 import requests
 from datetime import datetime
 from config import TOKEN, NOTIFY_CHANNEL_ID
+import os
+import threading
+from flask import Flask
 from steam_api import (
     extract_appid,
     get_game_name,
@@ -35,12 +38,25 @@ bot = commands.Bot(
 )
 
 
+app = Flask(__name__)
+
+@app.route("/")
+def home():
+    return "Steam GameCheck Bot is running!"
+
+def run_web_server():
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host="0.0.0.0", port=port)
+
+
 def parse_japanese_date(date_text):
     try:
         return datetime.strptime(date_text, "%Y年%m月%d日").date()
     except ValueError:
         return None
 
+
+threading.Thread(target=run_web_server).start()
 
 
 #  ログインしたら価格チェックとリリース日チェックをするよ
